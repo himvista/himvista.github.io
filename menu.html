@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lake Point Bhojanalaya | The Himalayan Vista</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Poppins', sans-serif; background: #f7f1e8; color: #2d2a26; min-height: 100vh; }
+
+        /* HERO */
+        .hero {
+            background: radial-gradient(circle at top right, #fff7ea 0%, #f7efe3 45%, #efe3d3 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            padding: 40px 20px;
+        }
+        .hero::before {
+            content:'';
+            position:absolute;
+            width:500px;height:500px;
+            background:radial-gradient(circle,rgba(138,109,59,0.07) 0%,transparent 70%);
+            top:-100px;right:-100px;border-radius:50%;
+        }
+        .hero::after {
+            content:'';
+            position:absolute;
+            width:350px;height:350px;
+            background:radial-gradient(circle,rgba(76,175,80,0.06) 0%,transparent 70%);
+            bottom:-80px;left:-80px;border-radius:50%;
+        }
+
+        /* Logo area */
+        .logo-wrap {
+            display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:28px;z-index:1;
+        }
+        .logo-icon {
+            width:72px;height:72px;border-radius:20px;
+            background:linear-gradient(135deg,#8a6d3b,#c8a96a);
+            display:flex;align-items:center;justify-content:center;
+            font-size:30px;
+            box-shadow:0 8px 24px rgba(138,109,59,0.3);
+        }
+        .logo-name {
+            font-family:'Playfair Display',serif;
+            font-size:20px;font-weight:700;
+            color:#5a3e20;letter-spacing:0.5px;text-align:center;
+        }
+        .logo-tagline {
+            font-size:12px;color:#9a8272;letter-spacing:1.5px;text-transform:uppercase;
+        }
+
+        .divider {
+            width:60px;height:2px;
+            background:linear-gradient(90deg,transparent,#c8a96a,transparent);
+            margin:10px auto 24px;z-index:1;
+        }
+
+        .hero-title {
+            font-family:'Playfair Display',serif;
+            font-size:clamp(1.8rem,5vw,3rem);
+            text-align:center;line-height:1.25;
+            color:#2d2a26;z-index:1;
+            margin-bottom:8px;
+        }
+        .hero-title span { color:#8a6d3b; }
+        .hero-sub {
+            font-size:13px;color:#9a8272;
+            letter-spacing:1px;text-align:center;
+            margin-bottom:40px;z-index:1;
+        }
+
+        .step-label {
+            font-size:11px;color:#b0a090;letter-spacing:2px;
+            text-transform:uppercase;margin-bottom:8px;z-index:1;
+        }
+        .step-title {
+            font-family:'Playfair Display',serif;
+            font-size:24px;color:#3d2e1a;
+            margin-bottom:24px;z-index:1;
+        }
+
+        /* Room cards */
+        .rooms-grid {
+            display:grid;grid-template-columns:repeat(2,1fr);
+            gap:14px;max-width:460px;width:100%;z-index:1;
+        }
+        .room-card {
+            background:#fffaf3;
+            border:1.5px solid #e8d8c0;
+            border-radius:18px;padding:26px 16px;
+            cursor:pointer;text-align:center;
+            transition:all 0.3s ease;
+            box-shadow:0 2px 12px rgba(138,109,59,0.06);
+        }
+        .room-card:hover {
+            border-color:#8a6d3b;
+            transform:translateY(-5px);
+            box-shadow:0 16px 36px rgba(138,109,59,0.16);
+            background:#fff9ef;
+        }
+        .room-icon { font-size:30px;margin-bottom:8px; }
+        .room-num {
+            font-family:'Playfair Display',serif;
+            font-size:30px;font-weight:700;color:#8a6d3b;
+        }
+        .room-text { font-size:12px;color:#b0a090;margin-top:3px; }
+
+        /* STEP 2 */
+        #step2 { display:none;width:100%;min-height:100vh;background:#f7f1e8; }
+
+        /* Sticky Header */
+        .menu-header {
+            background:#fffaf3;
+            border-bottom:1px solid #e8d8c0;
+            padding:14px 20px;
+            display:flex;align-items:center;
+            justify-content:space-between;
+            position:sticky;top:0;z-index:100;
+            box-shadow:0 2px 12px rgba(138,109,59,0.07);
+        }
+        .header-left { display:flex;align-items:center;gap:12px; }
+        .header-brand { display:flex;align-items:center;gap:10px; }
+        .brand-icon {
+            width:38px;height:38px;border-radius:10px;
+            background:linear-gradient(135deg,#8a6d3b,#c8a96a);
+            display:flex;align-items:center;justify-content:center;
+            font-size:18px;
+            box-shadow:0 4px 12px rgba(138,109,59,0.25);
+        }
+        .brand-text .b-name {font-size:14px;font-weight:600;color:#2d2a26;}
+        .brand-text .b-room {font-size:11px;color:#8a6d3b;font-weight:600;}
+        .back-btn {
+            background:#f2e7d8;border:1.5px solid #d8c4a8;
+            color:#5a3e20;padding:7px 14px;
+            border-radius:8px;cursor:pointer;
+            font-size:12px;font-family:'Poppins',sans-serif;
+            font-weight:500;transition:all 0.2s;
+        }
+        .back-btn:hover { background:#e8d8c0; }
+        .cart-pill {
+            background:linear-gradient(135deg,#8a6d3b,#c8a96a);
+            color:#fff;padding:8px 18px;
+            border-radius:50px;font-size:13px;
+            font-weight:600;cursor:pointer;
+            display:flex;align-items:center;gap:6px;
+            border:none;font-family:'Poppins',sans-serif;
+            box-shadow:0 4px 14px rgba(138,109,59,0.3);
+            transition:all 0.2s;
+        }
+        .cart-pill:hover { transform:scale(1.03); box-shadow:0 6px 20px rgba(138,109,59,0.4); }
+
+        /* Category Tabs */
+        .cat-tabs {
+            display:flex;gap:8px;padding:14px 20px;
+            overflow-x:auto;background:#f7f1e8;
+            border-bottom:1px solid #e8d8c0;
+            scrollbar-width:none;
+        }
+        .cat-tabs::-webkit-scrollbar{display:none;}
+        .cat-tab {
+            white-space:nowrap;padding:7px 16px;
+            border-radius:50px;font-size:12px;
+            cursor:pointer;border:1.5px solid #d8c4a8;
+            background:#fffaf3;color:#7a6550;
+            font-family:'Poppins',sans-serif;font-weight:500;
+            transition:all 0.2s;
+        }
+        .cat-tab.active,.cat-tab:hover {
+            border-color:#8a6d3b;color:#5a3e20;
+            background:#f2e7d8;
+        }
+
+        /* Menu body */
+        .menu-body {
+            padding:20px;max-width:960px;
+            margin:0 auto;padding-bottom:130px;
+        }
+        .cat-section { margin-bottom:32px; }
+        .cat-heading {
+            font-family:'Playfair Display',serif;
+            font-size:20px;color:#3d2e1a;
+            margin-bottom:14px;
+            display:flex;align-items:center;gap:12px;
+        }
+        .cat-heading::after {
+            content:'';flex:1;height:1px;
+            background:linear-gradient(90deg,#d8c4a8,transparent);
+        }
+
+        /* Items */
+        .items-grid {
+            display:grid;
+            grid-template-columns:repeat(auto-fill,minmax(270px,1fr));
+            gap:10px;
+        }
+        .menu-item {
+            background:#fffaf3;
+            border:1.5px solid #eedfc7;
+            border-radius:14px;padding:14px 16px;
+            display:flex;justify-content:space-between;
+            align-items:center;
+            transition:all 0.2s;
+            box-shadow:0 1px 6px rgba(138,109,59,0.05);
+        }
+        .menu-item:hover { border-color:#c8a96a;background:#fff9ef;box-shadow:0 4px 16px rgba(138,109,59,0.1); }
+        .item-left { display:flex;align-items:center;gap:10px; }
+        .item-emoji {
+            width:38px;height:38px;border-radius:10px;
+            background:linear-gradient(135deg,#f7efe3,#eedfc7);
+            display:flex;align-items:center;justify-content:center;
+            font-size:20px;flex-shrink:0;
+        }
+        .item-info .name { font-size:13px;font-weight:500;color:#2d2a26; }
+        .item-info .price { font-size:12px;color:#2f7d4a;font-weight:600;margin-top:2px; }
+        .qty-control { display:flex;align-items:center;gap:8px; }
+        .qty-btn {
+            width:28px;height:28px;border-radius:50%;
+            border:1.5px solid #d8c4a8;
+            background:#f2e7d8;color:#5a3e20;
+            font-size:16px;cursor:pointer;
+            display:flex;align-items:center;justify-content:center;
+            transition:all 0.2s;line-height:1;
+        }
+        .qty-btn:hover { background:#8a6d3b;border-color:#8a6d3b;color:#fff; }
+        .qty-num { width:24px;text-align:center;font-size:14px;font-weight:700;color:#5a3e20; }
+
+        /* Order Panel */
+        .order-panel {
+            position:fixed;bottom:0;left:0;right:0;
+            background:#fffaf3;
+            border-top:1.5px solid #e8d8c0;
+            padding:14px 24px;
+            display:flex;align-items:center;
+            justify-content:space-between;
+            z-index:200;
+            transform:translateY(100%);
+            transition:transform 0.35s cubic-bezier(.4,0,.2,1);
+            box-shadow:0 -4px 24px rgba(138,109,59,0.1);
+        }
+        .order-panel.visible { transform:translateY(0); }
+        .order-info .label { font-size:11px;color:#9a8272;letter-spacing:1px;text-transform:uppercase; }
+        .order-info .total { font-size:24px;font-weight:700;color:#8a6d3b; }
+        .send-btn {
+            background:linear-gradient(135deg,#25D366,#1aad55);
+            color:#fff;border:none;
+            padding:13px 24px;border-radius:12px;
+            font-size:14px;font-weight:600;
+            cursor:pointer;display:flex;align-items:center;gap:8px;
+            font-family:'Poppins',sans-serif;
+            box-shadow:0 4px 16px rgba(37,211,102,0.3);
+            transition:all 0.2s;
+        }
+        .send-btn:hover { transform:scale(1.03);box-shadow:0 6px 22px rgba(37,211,102,0.4); }
+
+        /* Modal */
+        .modal-overlay {
+            display:none;position:fixed;inset:0;
+            background:rgba(60,40,20,0.5);
+            z-index:300;align-items:center;
+            justify-content:center;padding:20px;
+            backdrop-filter:blur(4px);
+        }
+        .modal-overlay.active { display:flex; }
+        .modal {
+            background:#fffaf3;
+            border:1.5px solid #e8d8c0;
+            border-radius:22px;padding:28px;
+            width:100%;max-width:460px;
+            max-height:82vh;overflow-y:auto;
+            box-shadow:0 20px 60px rgba(138,109,59,0.2);
+        }
+        .modal-logo {
+            display:flex;align-items:center;gap:10px;
+            margin-bottom:18px;padding-bottom:14px;
+            border-bottom:1px solid #e8d8c0;
+        }
+        .modal-logo-icon {
+            width:36px;height:36px;border-radius:10px;
+            background:linear-gradient(135deg,#8a6d3b,#c8a96a);
+            display:flex;align-items:center;justify-content:center;font-size:16px;
+        }
+        .modal-logo-text .t1 { font-size:13px;font-weight:600;color:#2d2a26; }
+        .modal-logo-text .t2 { font-size:11px;color:#8a6d3b; }
+        .modal h3 { font-family:'Playfair Display',serif;font-size:20px;margin-bottom:14px;color:#2d2a26; }
+        .order-line {
+            display:flex;justify-content:space-between;
+            padding:9px 0;border-bottom:1px solid #f0e6d6;
+            font-size:13px;color:#2d2a26;
+        }
+        .order-line .qty-badge {
+            background:#f2e7d8;color:#8a6d3b;
+            padding:1px 8px;border-radius:50px;
+            font-size:11px;font-weight:600;margin-right:6px;
+        }
+        .order-grand { margin-top:14px;font-size:20px;font-weight:700;color:#8a6d3b;text-align:right; }
+        .modal-btns { display:flex;gap:12px;margin-top:18px; }
+        .modal-btns button {
+            flex:1;padding:12px;border-radius:10px;
+            cursor:pointer;font-size:14px;
+            font-family:'Poppins',sans-serif;font-weight:600;
+            transition:all 0.2s;
+        }
+        .btn-cancel { background:#f2e7d8;border:1.5px solid #d8c4a8;color:#5a3e20; }
+        .btn-cancel:hover { background:#e8d8c0; }
+        .btn-confirm {
+            background:linear-gradient(135deg,#25D366,#1aad55);
+            border:none;color:#fff;
+            box-shadow:0 4px 14px rgba(37,211,102,0.3);
+        }
+        .btn-confirm:hover { transform:scale(1.02); }
+
+        @media(max-width:480px){
+            .items-grid{ grid-template-columns:1fr; }
+            .rooms-grid{ grid-template-columns:repeat(2,1fr); }
+        }
+    </style>
+</head>
+<body>
+
+<!-- STEP 1 -->
+<section class="hero" id="step1">
+    <div class="logo-wrap">
+        <div class="logo-icon">🏔️</div>
+        <div class="logo-name">The Himalayan Vista</div>
+        <div class="logo-tagline">Homestay &amp; Guest House</div>
+    </div>
+    <div class="divider"></div>
+    <h1 class="hero-title">Order from <span>Lake Point</span><br>Bhojanalaya</h1>
+    <p class="hero-sub">🍽️ Fresh Homestyle Food • Delivered to Your Room</p>
+    <p class="step-label">Step 1 of 2</p>
+    <p class="step-title">Select Your Room</p>
+    <div class="rooms-grid">
+        <div class="room-card" onclick="selectRoom('301')">
+            <div class="room-icon">🛏️</div>
+            <div class="room-num">301</div>
+            <div class="room-text">3rd Floor</div>
+        </div>
+        <div class="room-card" onclick="selectRoom('302')">
+            <div class="room-icon">🛏️</div>
+            <div class="room-num">302</div>
+            <div class="room-text">3rd Floor</div>
+        </div>
+        <div class="room-card" onclick="selectRoom('303')">
+            <div class="room-icon">🛏️</div>
+            <div class="room-num">303</div>
+            <div class="room-text">3rd Floor</div>
+        </div>
+        <div class="room-card" onclick="selectRoom('201')">
+            <div class="room-icon">🛏️</div>
+            <div class="room-num">201</div>
+            <div class="room-text">2nd Floor</div>
+        </div>
+    </div>
+</section>
+
+<!-- STEP 2 -->
+<div id="step2">
+    <div class="menu-header">
+        <div class="header-left">
+            <button class="back-btn" onclick="goBack()">← Back</button>
+            <div class="header-brand">
+                <div class="brand-icon">🏔️</div>
+                <div class="brand-text">
+                    <div class="b-name">The Himalayan Vista</div>
+                    <div class="b-room" id="room-label">Room —</div>
+                </div>
+            </div>
+        </div>
+        <button class="cart-pill" onclick="openModal()">
+            🛒 <span id="cart-count">0 items</span>
+        </button>
+    </div>
+
+    <div class="cat-tabs" id="cat-tabs"></div>
+    <div class="menu-body" id="menu-body"></div>
+
+    <div class="order-panel" id="order-panel">
+        <div class="order-info">
+            <div class="label">Your Order Total</div>
+            <div class="total" id="panel-total">₹0</div>
+        </div>
+        <button class="send-btn" onclick="openModal()">🛒 Review &amp; Order</button>
+    </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal">
+    <div class="modal">
+        <div class="modal-logo">
+            <div class="modal-logo-icon">🏔️</div>
+            <div class="modal-logo-text">
+                <div class="t1">The Himalayan Vista</div>
+                <div class="t2">Lake Point Bhojanalaya Order</div>
+            </div>
+        </div>
+        <h3>📋 Order Summary</h3>
+        <div id="modal-items"></div>
+        <div class="order-grand" id="modal-total"></div>
+        <div class="modal-btns">
+            <button class="btn-cancel" onclick="closeModal()">✏️ Edit</button>
+            <button class="btn-confirm" onclick="sendWhatsApp()">📱 Send to Dhaba</button>
+        </div>
+    </div>
+</div>
+
+<script>
+const MENU = {
+    "☕ Beverages": {
+        "Tea":15,"Green Tea":35,"Black Tea":20,"Hot Coffee":30,"Cold Coffee":50,
+        "Cold Coffee with Ice Cream":120,"Lemon Tea":40,"Milk":30,
+        "Lassi (Sweet/Salt)":40,"Masala Lassi":60,"Lemon Soda":50
+    },
+    "🍳 Breakfast": {
+        "Aloo Prantha + Pickle":40,"Paneer Prantha + Pickle":80,
+        "Mix Prantha + Pickle":60,"Gobhi Prantha + Pickle":50,
+        "Poori Channa (2 Pcs)":140,"Curd (Dahi)":30,"Mix Raita":100,"Boondi Raita":80
+    },
+    "🍽️ Thali Combos": {
+        "Healthy Green Salad":100,"Vinegar Onion":30,"Channa Chawal":100,
+        "Rajmah Chawal":100,"Curry Chawal":100,"Dal Chawal":100,
+        "Special Thali (Mix Veg, Dal, Paneer, Rice, 3 Roti)":250
+    },
+    "🍛 Indian Veggies": {
+        "Kadhai Paneer":250,"Sahi Paneer":250,"Matar Paneer":250,
+        "Paneer Bhurji":180,"Dal Tadka":170,"Dal Makhani":190,
+        "Curry Pakora":150,"White Channa Masala":150,"Jeera Aloo":120,
+        "Mix Veg":150,"Aloo Matar":200,"Plain Rice":80,"Jeera Rice":100,
+        "Veg. Fried Rice":130,"Chapati (1 Roti)":10,"Rajmah":180
+    },
+    "🍔 Fast Food & Snacks": {
+        "Veg. Burger":100,"Cheese Burger":120,"Dahi Tikki":80,
+        "Cheese Sandwich":80,"Veg. Sandwich":40,"French Fries":120,
+        "Veg. Maggi":70,"Plain Maggi":50,"Masala Maggi":60,
+        "Cheese Butter Maggi":80,"Veg. Momos":140,"Veg. Chowmin":140,
+        "Mix Pakoda":200,"Bread Pakoda":40,"Chilly Paneer":250,
+        "Chilly Potato":250,"Veg. Soup":50,"Bread Toast":30
+    }
+};
+
+const ICONS = {
+    "Tea":"🍵","Green Tea":"🍵","Black Tea":"🍵","Hot Coffee":"☕","Cold Coffee":"🧋",
+    "Cold Coffee with Ice Cream":"🍨","Lemon Tea":"🍋","Milk":"🥛","Lassi (Sweet/Salt)":"🥤",
+    "Masala Lassi":"🥤","Lemon Soda":"🫧",
+    "Aloo Prantha + Pickle":"🫓","Paneer Prantha + Pickle":"🫓","Mix Prantha + Pickle":"🫓",
+    "Gobhi Prantha + Pickle":"🫓","Poori Channa (2 Pcs)":"🍛","Curd (Dahi)":"🥣",
+    "Mix Raita":"🥣","Boondi Raita":"🥣",
+    "Healthy Green Salad":"🥗","Vinegar Onion":"🧅","Channa Chawal":"🍛",
+    "Rajmah Chawal":"🍛","Curry Chawal":"🍛","Dal Chawal":"🍛",
+    "Special Thali (Mix Veg, Dal, Paneer, Rice, 3 Roti)":"🍱",
+    "Kadhai Paneer":"🍲","Sahi Paneer":"🍲","Matar Paneer":"🍲",
+    "Paneer Bhurji":"🍳","Dal Tadka":"🥘","Dal Makhani":"🥘","Curry Pakora":"🥘",
+    "White Channa Masala":"🥘","Jeera Aloo":"🥔","Mix Veg":"🥦","Aloo Matar":"🥔",
+    "Plain Rice":"🍚","Jeera Rice":"🍚","Veg. Fried Rice":"🍚",
+    "Chapati (1 Roti)":"🫓","Rajmah":"🥘",
+    "Veg. Burger":"🍔","Cheese Burger":"🍔","Dahi Tikki":"🫔","Cheese Sandwich":"🥪",
+    "Veg. Sandwich":"🥪","French Fries":"🍟","Veg. Maggi":"🍜","Plain Maggi":"🍜",
+    "Masala Maggi":"🍜","Cheese Butter Maggi":"🍜","Veg. Momos":"🥟","Veg. Chowmin":"🍜",
+    "Mix Pakoda":"🧆","Bread Pakoda":"🍞","Chilly Paneer":"🌶️","Chilly Potato":"🌶️",
+    "Veg. Soup":"🥣","Bread Toast":"🍞"
+};
+
+const DHABA = "918894498398";
+let selectedRoom = "";
+let cart = {};
+
+function selectRoom(room) {
+    selectedRoom = room;
+    document.getElementById("room-label").textContent = "Room " + room;
+    document.getElementById("step1").style.display = "none";
+    document.getElementById("step2").style.display = "block";
+    buildMenu();
+}
+
+function goBack() {
+    document.getElementById("step2").style.display = "none";
+    document.getElementById("step1").style.display = "flex";
+}
+
+function buildMenu() {
+    const tabsEl = document.getElementById("cat-tabs");
+    const bodyEl = document.getElementById("menu-body");
+    tabsEl.innerHTML = ""; bodyEl.innerHTML = "";
+    Object.keys(MENU).forEach((cat, i) => {
+        const tab = document.createElement("button");
+        tab.className = "cat-tab" + (i===0?" active":"");
+        tab.textContent = cat;
+        tab.onclick = () => {
+            document.querySelectorAll(".cat-tab").forEach(t=>t.classList.remove("active"));
+            tab.classList.add("active");
+            document.getElementById("cat-"+i).scrollIntoView({behavior:"smooth",block:"start"});
+        };
+        tabsEl.appendChild(tab);
+
+        const sec = document.createElement("div");
+        sec.className = "cat-section"; sec.id = "cat-"+i;
+        const head = document.createElement("div");
+        head.className = "cat-heading"; head.textContent = cat;
+        sec.appendChild(head);
+
+        const grid = document.createElement("div");
+        grid.className = "items-grid";
+        Object.entries(MENU[cat]).forEach(([name, price]) => {
+            if(!cart[name]) cart[name] = {price, qty:0};
+            const safeId = "qty-"+name.replace(/[^a-z0-9]/gi,'_');
+            const card = document.createElement("div");
+            card.className = "menu-item";
+            card.innerHTML = `
+              <div class="item-left">
+                <div class="item-emoji">${ICONS[name]||"🍽️"}</div>
+                <div class="item-info">
+                  <div class="name">${name}</div>
+                  <div class="price">₹${price}/-</div>
+                </div>
+              </div>
+              <div class="qty-control">
+                <button class="qty-btn" onclick="changeQty('${name}',-1)">−</button>
+                <span class="qty-num" id="${safeId}">${cart[name].qty}</span>
+                <button class="qty-btn" onclick="changeQty('${name}',1)">+</button>
+              </div>`;
+            grid.appendChild(card);
+        });
+        sec.appendChild(grid);
+        bodyEl.appendChild(sec);
+    });
+}
+
+function changeQty(name, delta) {
+    if(!cart[name]) return;
+    cart[name].qty = Math.max(0, cart[name].qty + delta);
+    const safeId = "qty-"+name.replace(/[^a-z0-9]/gi,'_');
+    const el = document.getElementById(safeId);
+    if(el) el.textContent = cart[name].qty;
+    updatePanel();
+}
+
+function updatePanel() {
+    let total=0, count=0;
+    Object.values(cart).forEach(v=>{total+=v.price*v.qty;count+=v.qty;});
+    document.getElementById("panel-total").textContent = "₹"+total;
+    document.getElementById("cart-count").textContent = count+" item"+(count!==1?"s":"");
+    const panel = document.getElementById("order-panel");
+    count>0 ? panel.classList.add("visible") : panel.classList.remove("visible");
+}
+
+function openModal() {
+    const items = Object.entries(cart).filter(([k,v])=>v.qty>0);
+    if(items.length===0){alert("Please add items to your order first!");return;}
+    const itemsEl = document.getElementById("modal-items");
+    const totalEl = document.getElementById("modal-total");
+    itemsEl.innerHTML = "";
+    let total = 0;
+    items.forEach(([name,v])=>{
+        const sub = v.price*v.qty; total+=sub;
+        const line = document.createElement("div");
+        line.className = "order-line";
+        line.innerHTML = `<span><span class="qty-badge">${v.qty}x</span>${name}</span><span>₹${sub}</span>`;
+        itemsEl.appendChild(line);
+    });
+    totalEl.textContent = "Total: ₹"+total;
+    document.getElementById("modal").classList.add("active");
+}
+
+function closeModal() { document.getElementById("modal").classList.remove("active"); }
+
+function sendWhatsApp() {
+    const items = Object.entries(cart).filter(([k,v])=>v.qty>0);
+    let total=0;
+    let lines = items.map(([name,v])=>{total+=v.price*v.qty;return `  • ${v.qty}x ${name} — ₹${v.price*v.qty}`;});
+    const msg = `🛎️ *New Food Order*
+🏔️ *The Himalayan Vista Homestay*
+
+📍 *Room:* ${selectedRoom}
+
+🍽️ *Items:*
+${lines.join("\n")}
+
+💰 *Total: ₹${total}*
+
+⏰ Please prepare & deliver. Thank you! 🙏`;
+    window.open("https://wa.me/"+DHABA+"?text="+encodeURIComponent(msg),"_blank");
+    closeModal();
+}
+</script>
+</body>
+</html>
